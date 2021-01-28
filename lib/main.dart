@@ -11,7 +11,7 @@ String query = '''
    query {
     popular_artists {
       artists {
-        name
+        name       
       }
     }
   }
@@ -20,8 +20,7 @@ String query = '''
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    HttpLink httpLink =
-        HttpLink(uri: "https://metaphysics-staging.artsy.net/graphql");
+    HttpLink httpLink = HttpLink(uri: "https://metaphysics-staging.artsy.net");
 
     ValueNotifier<GraphQLClient> client = ValueNotifier(
       GraphQLClient(cache: InMemoryCache(), link: httpLink),
@@ -42,9 +41,7 @@ class MyApp extends StatelessWidget {
                 if (result.hasException)
                   return ErrorPage(error: result.exception.toString());
                 if (result.loading) return LoadingPage();
-
-                List artists = result.data['popular_artists'];
-
+                List artists = result.data['popular_artists']['artists'];
                 return ListView.builder(
                   itemCount: artists.length,
                   itemBuilder: (_, index) => Text(artists[index]['name']),
